@@ -4,25 +4,27 @@ Landing de **Variedades LyL**, negocio de anchetas y detalles personalizados.
 *Detalles que enamoran, momentos que perduran.*
 
 Hecha con [Astro](https://astro.build) y Tailwind CSS, siguiendo el manual de marca (`docs/brand/`).
-Se publica sola en GitHub Pages: **https://sarayagudelo20231-sudo.github.io/varieadesl-m/**
+Se publica en **Cloudflare Workers** como sitio estático (ver [Publicación](#publicación-cloudflare)).
 
 ## Requisitos
 
-- Node.js 22.23 o superior (probado con Node 24)
+- Node.js 22.23 o superior (probado con Node 24; `.node-version` fija 24.21.0 para Cloudflare)
 - npm
 
 ## Comandos
 
-| Comando              | Qué hace                                                  |
-| -------------------- | --------------------------------------------------------- |
-| `npm install`        | Instala las dependencias                                  |
-| `npm run dev`        | Servidor local en `http://localhost:4321/varieadesl-m/`   |
-| `npm run build`      | Genera el sitio final en `dist/`                          |
-| `npm run preview`    | Muestra localmente el sitio ya compilado                  |
-| `npm run check`      | Revisa errores de tipos y plantillas                      |
-| `npm run brand:extract` | Vuelve a generar el logo desde la lámina del manual    |
+| Comando                 | Qué hace                                                       |
+| ----------------------- | -------------------------------------------------------------- |
+| `npm install`           | Instala las dependencias                                       |
+| `npm run dev`           | Servidor local en `http://localhost:4321/`                     |
+| `npm run build`         | Genera el sitio final en `dist/`                               |
+| `npm run preview`       | Muestra localmente el sitio ya compilado                       |
+| `npm run check`         | Revisa errores de tipos y plantillas                           |
+| `npm run cf:preview`    | Compila y sirve el sitio con el mismo motor de Cloudflare      |
+| `npm run deploy`        | Compila y publica desde tu equipo (pide iniciar sesión)        |
+| `npm run brand:extract` | Vuelve a generar el logo desde la lámina del manual            |
 
-> Los scripts llaman a Astro con `node node_modules/astro/bin/astro.mjs` en lugar de `astro`.
+> Los scripts llaman a Astro y a Wrangler con `node node_modules/…` en lugar de `astro` o `wrangler`.
 > Así funcionan aunque la carpeta del proyecto tenga `&` en el nombre (en Windows, los atajos
 > `.cmd` de npm fallan con ese carácter). Por la misma razón, usa `npm run …` y no `npx astro …`.
 
@@ -77,15 +79,32 @@ src/
   layouts/Base.astro  <head>: SEO, Open Graph, fuentes
   lib/              enlaces de WhatsApp, formato de precios, rutas
   pages/index.astro la landing
+  pages/404.astro   página de "no encontrada"
   styles/global.css colores y tipografías de la marca
 docs/brand/         láminas del manual de marca
 scripts/            extracción del logo
+wrangler.jsonc      configuración de Cloudflare Workers
 ```
 
-## Publicación (GitHub Pages)
+## Publicación (Cloudflare)
 
-Cada push a `main` ejecuta `.github/workflows/deploy.yml`, que compila y publica el sitio.
-La primera vez hay que activarlo en GitHub: **Settings → Pages → Build and deployment →
-Source: GitHub Actions**.
+El sitio es 100 % estático: Astro lo genera en `dist/` y Cloudflare Workers lo sirve como
+*static assets* (no necesita adaptador). La configuración está en `wrangler.jsonc`.
 
-Si el repositorio cambia de nombre o de dueño, actualiza `site` y `base` en `astro.config.mjs`.
+### Conectar el repositorio (una sola vez)
+
+En Cloudflare: **Workers & Pages → Create → Import a repository** → elige este repositorio y usa:
+
+| Campo           | Valor                |
+| --------------- | -------------------- |
+| Project name    | `varieadesl-m` (igual al `name` de `wrangler.jsonc`) |
+| Build command   | `npm run build`      |
+| Deploy command  | `npx wrangler deploy`|
+
+Desde ahí, cada push a `main` vuelve a publicar el sitio solo.
+
+### Después del primer despliegue
+
+Copia la URL que te da Cloudflare (o tu dominio propio) en `SITE_URL` dentro de
+`astro.config.mjs` y haz push. Con eso se generan el enlace canónico y la imagen que se ve
+al compartir el sitio por WhatsApp o redes.

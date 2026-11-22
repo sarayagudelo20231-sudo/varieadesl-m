@@ -2,12 +2,14 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 
-// Publicado en GitHub Pages: https://sarayagudelo20231-sudo.github.io/varieadesl-m/
+// TODO: cuando Cloudflare te dé la URL del sitio (o tengas dominio propio), ponla aquí,
+// por ejemplo 'https://varieadesl-m.tu-cuenta.workers.dev'.
+// Se usa para el enlace canónico y la imagen que se ve al compartir el sitio en redes.
+const SITE_URL = '';
+
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://sarayagudelo20231-sudo.github.io',
-  base: '/varieadesl-m',
-  trailingSlash: 'ignore',
+  site: SITE_URL || undefined,
   vite: {
     plugins: [tailwindcss()],
   },

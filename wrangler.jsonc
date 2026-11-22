@@ -1,0 +1,12 @@
+// Configuración de Cloudflare Workers: sirve el sitio estático que genera Astro en dist/.
+// El "name" debe coincidir con el nombre del proyecto en Cloudflare.
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "varieadesl-m",
+  "compatibility_date": "2026-11-15",
+  "assets": {
+    "directory": "./dist",
+    // Las rutas que no existen muestran src/pages/404.astro con código 404.
+    "not_found_handling": "404-page"
+  }
+}

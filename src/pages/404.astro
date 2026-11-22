@@ -1,0 +1,32 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Boton from '../components/ui/Boton.astro';
+import Icono from '../components/ui/Icono.astro';
+import Brillos from '../components/graficos/Brillos.astro';
+import logoColor from '../assets/brand/logo-color.png';
+import { negocio } from '../data/negocio';
+import { enlaceWhatsApp } from '../lib/whatsapp';
+import { url } from '../lib/url';
+---
+
+<Base title={`Página no encontrada · ${negocio.nombre}`}>
+  <main id="contenido" class="grid min-h-svh place-items-center bg-fondo px-4 py-16">
+    <div class="relative max-w-lg text-center">
+      <Brillos class="absolute -top-4 right-6 size-12 rotate-90" />
+      <a href={url('')} class="inline-block">
+        <Image src={logoColor} alt={negocio.nombre} widths={[220, 440]} sizes="220px" class="mx-auto h-auto w-[220px]" />
+      </a>
+      <p class="mt-10 font-display text-xs font-extrabold tracking-[0.3em] text-morado uppercase sm:text-sm">Error 404</p>
+      <h1 class="mt-3 text-3xl font-black sm:text-4xl">Esta página no existe</h1>
+      <p class="mt-4 text-lg">Puede que el enlace esté mal escrito. Vuelve al inicio para ver nuestras anchetas.</p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <Boton href={url('')} variante="morado" tamano="lg">Volver al inicio</Boton>
+        <Boton href={enlaceWhatsApp()} variante="contorno" tamano="lg" externo>
+          <Icono nombre="whatsapp" class="size-5" />
+          Escríbenos
+        </Boton>
+      </div>
+    </div>
+  </main>
+</Base>

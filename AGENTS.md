@@ -10,6 +10,10 @@ node node_modules/astro/bin/astro.mjs dev --background
 Manage the background server with `node node_modules/astro/bin/astro.mjs dev stop|status|logs`.
 The npm scripts (`npm run dev`, `npm run build`, `npm run check`) already do this.
 
+Deployment: static site served by Cloudflare Workers static assets (`wrangler.jsonc`, assets dir
+`./dist`, no adapter). Cloudflare Workers Builds runs `npm run build` then `npx wrangler deploy`.
+Locally use `npm run cf:preview` / `npm run deploy` (they call wrangler through node).
+
 Editable content lives in `src/data/` (business info, catalog, occasions). Brand tokens are in
 `src/styles/global.css`; the brand manual slides are in `docs/brand/`.
 

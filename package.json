@@ -13,6 +13,8 @@
     "preview": "node node_modules/astro/bin/astro.mjs preview",
     "check": "node node_modules/astro/bin/astro.mjs check",
     "brand:extract": "node scripts/extract-logo.mjs",
+    "cf:preview": "npm run build && node node_modules/wrangler/bin/wrangler.js dev",
+    "deploy": "npm run build && node node_modules/wrangler/bin/wrangler.js deploy",
     "astro": "node node_modules/astro/bin/astro.mjs"
   },
   "dependencies": {
@@ -26,6 +28,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
     "sharp": "^0.35.5",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "wrangler": "^4.166.0"
   }
 }
