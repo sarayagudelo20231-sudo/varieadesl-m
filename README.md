@@ -97,7 +97,7 @@ En Cloudflare: **Workers & Pages → Create → Import a repository** → elige 
 
 | Campo           | Valor                |
 | --------------- | -------------------- |
-| Project name    | `varieadesl-m` (igual al `name` de `wrangler.jsonc`) |
+| Project name    | `variedadesl-l` (igual al `name` de `wrangler.jsonc`) |
 | Build command   | `npm run build`      |
 | Deploy command  | `npx wrangler deploy`|
 
