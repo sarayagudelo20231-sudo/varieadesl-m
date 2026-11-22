@@ -4,7 +4,8 @@ Landing de **Variedades LyL**, negocio de anchetas y detalles personalizados.
 *Detalles que enamoran, momentos que perduran.*
 
 Hecha con [Astro](https://astro.build) y Tailwind CSS, siguiendo el manual de marca (`docs/brand/`).
-Se publica en **Cloudflare Workers** como sitio estático (ver [Publicación](#publicación-cloudflare)).
+Se publica en **Cloudflare Workers** como sitio estático (ver [Publicación](#publicación-cloudflare)):
+**https://varieadesl-l.project-pjic.workers.dev/**
 
 ## Requisitos
 
@@ -97,7 +98,7 @@ En Cloudflare: **Workers & Pages → Create → Import a repository** → elige 
 
 | Campo           | Valor                |
 | --------------- | -------------------- |
-| Project name    | `variedadesl-l` (igual al `name` de `wrangler.jsonc`) |
+| Project name    | `varieadesl-l` (igual al `name` de `wrangler.jsonc`) |
 | Build command   | `npm run build`      |
 | Deploy command  | `npx wrangler deploy`|
 
