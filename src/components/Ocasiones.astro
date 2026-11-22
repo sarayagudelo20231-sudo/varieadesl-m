@@ -1,0 +1,49 @@
+---
+import EncabezadoSeccion from './ui/EncabezadoSeccion.astro';
+import Icono from './ui/Icono.astro';
+import { ocasiones, type ColorAcento } from '../data/ocasiones';
+
+const acentos: Record<ColorAcento, string> = {
+  morado: 'bg-morado text-white',
+  amarillo: 'bg-amarillo text-tinta',
+  turquesa: 'bg-turquesa text-tinta',
+  lila: 'bg-lila text-tinta',
+};
+---
+
+<section id="ocasiones" aria-labelledby="titulo-ocasiones" class="py-20 sm:py-24">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <EncabezadoSeccion
+      id="titulo-ocasiones"
+      eyebrow="01 · Ocasiones"
+      titulo="Un detalle para cada momento"
+      descripcion="Elige la ocasión y te mostramos las anchetas pensadas para ella. Todas se adaptan a tu gusto y presupuesto."
+    />
+
+    <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        ocasiones.map((o) => (
+          <li>
+            <a
+              href="#catalogo"
+              data-filtrar={o.id}
+              class="group flex h-full items-start gap-5 rounded-[1.75rem] bg-fondo p-6 ring-lila transition duration-200 hover:-translate-y-1 hover:bg-white hover:ring-2"
+            >
+              <span class:list={['grid size-14 shrink-0 place-items-center rounded-2xl', acentos[o.color]]}>
+                <Icono nombre={o.icono} class="size-7" />
+              </span>
+              <span>
+                <span class="block font-display text-lg font-extrabold text-tinta">{o.nombre}</span>
+                <span class="mt-1 block text-[0.95rem]">{o.descripcion}</span>
+                <span class="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-morado">
+                  Ver anchetas
+                  <Icono nombre="flecha" class="size-4 transition-transform group-hover:translate-x-1" />
+                </span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

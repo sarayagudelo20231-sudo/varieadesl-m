@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+/*
+ * Sistema de diseño de Variedades LyL (manual de marca).
+ * Paleta oficial: morado, amarillo, blanco, turquesa y lila.
+ * tinta / texto / fondo se muestrearon de las láminas del manual.
+ */
+@theme {
+  --color-morado: #6c4ce8;
+  --color-morado-oscuro: #5634d6;
+  --color-amarillo: #ffd93b;
+  --color-amarillo-oscuro: #f7cb10;
+  --color-turquesa: #2ed6c3;
+  --color-lila: #c7b8ff;
+  --color-tinta: #2a1b6e;
+  --color-texto: #4b4470;
+  --color-fondo: #f6f3ff;
+
+  --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-script: "Pacifico", cursive;
+
+  --animate-titilar: titilar 2.8s ease-in-out infinite;
+  --animate-flotar: flotar 7s ease-in-out infinite;
+
+  @keyframes titilar {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(0.82);
+    }
+  }
+
+  @keyframes flotar {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-white font-sans text-texto antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display text-tinta;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-morado);
+    outline-offset: 3px;
+    border-radius: 0.5rem;
+  }
+
+  ::selection {
+    background: var(--color-amarillo);
+    color: var(--color-tinta);
+  }
+}

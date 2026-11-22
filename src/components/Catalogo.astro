@@ -1,0 +1,91 @@
+---
+import AnchetaCard from './AnchetaCard.astro';
+import EncabezadoSeccion from './ui/EncabezadoSeccion.astro';
+import Boton from './ui/Boton.astro';
+import Icono from './ui/Icono.astro';
+import { catalogo } from '../data/catalogo';
+import { ocasiones } from '../data/ocasiones';
+import { enlaceWhatsApp } from '../lib/whatsapp';
+import { negocio } from '../data/negocio';
+
+const chip =
+  'rounded-full border-2 border-lila bg-white px-4 py-2 text-sm font-semibold text-tinta transition-colors hover:border-morado aria-pressed:border-morado aria-pressed:bg-morado aria-pressed:text-white';
+
+const mensajePersonalizada = `Hola ${negocio.nombre} 💜, quiero armar una ancheta personalizada.`;
+---
+
+<section id="catalogo" aria-labelledby="titulo-catalogo" class="bg-fondo py-20 sm:py-24">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <EncabezadoSeccion
+      id="titulo-catalogo"
+      eyebrow="02 · Catálogo"
+      titulo="Nuestras anchetas"
+      descripcion="Puedes cambiar productos, colores y el mensaje de la tarjeta. Los precios son de referencia y varían según lo que elijas."
+    />
+
+    <!-- Los filtros aparecen solo con JavaScript; sin JS se ven todas las anchetas. -->
+    <div class="mt-10 flex flex-wrap gap-2" role="group" aria-label="Filtrar por ocasión" data-filtros hidden>
+      <button type="button" class={chip} data-filtro="todas" aria-pressed="true">Todas</button>
+      {
+        ocasiones.map((o) => (
+          <button type="button" class={chip} data-filtro={o.id} aria-pressed="false">
+            {o.nombreCorto}
+          </button>
+        ))
+      }
+    </div>
+
+    <p class="sr-only" aria-live="polite" data-filtro-estado></p>
+
+    <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        catalogo.map((a, i) => (
+          <li data-ocasiones={a.ocasiones.join(' ')}>
+            <AnchetaCard ancheta={a} indice={i} />
+          </li>
+        ))
+      }
+    </ul>
+
+    <div
+      class="mt-12 flex flex-col items-center gap-5 rounded-[1.75rem] border-2 border-dashed border-lila bg-white p-6 text-center sm:flex-row sm:justify-between sm:p-8 sm:text-left"
+    >
+      <p class="text-lg">
+        <strong class="font-display font-extrabold text-tinta">¿No ves lo que buscas?</strong>
+        <br class="hidden sm:block" />
+        Armamos tu ancheta desde cero, con tu presupuesto.
+      </p>
+      <Boton href={enlaceWhatsApp(mensajePersonalizada)} variante="morado" externo>
+        <Icono nombre="whatsapp" />
+        Armar la mía
+      </Boton>
+    </div>
+  </div>
+</section>
+
+<script>
+  const grupo = document.querySelector<HTMLElement>('[data-filtros]');
+  const estado = document.querySelector<HTMLElement>('[data-filtro-estado]');
+  const chips = [...document.querySelectorAll<HTMLButtonElement>('[data-filtro]')];
+  const items = [...document.querySelectorAll<HTMLElement>('[data-ocasiones]')];
+
+  function filtrar(id: string) {
+    let visibles = 0;
+    for (const item of items) {
+      const coincide = id === 'todas' || (item.dataset.ocasiones ?? '').split(' ').includes(id);
+      item.hidden = !coincide;
+      if (coincide) visibles++;
+    }
+    for (const chip of chips) chip.setAttribute('aria-pressed', String(chip.dataset.filtro === id));
+    if (estado) estado.textContent = `${visibles} ${visibles === 1 ? 'ancheta' : 'anchetas'}`;
+  }
+
+  if (grupo) {
+    grupo.hidden = false;
+    for (const chip of chips) chip.addEventListener('click', () => filtrar(chip.dataset.filtro ?? 'todas'));
+    // Las tarjetas de "Ocasiones" llevan al catálogo con ese filtro activo.
+    document.querySelectorAll<HTMLAnchorElement>('[data-filtrar]').forEach((enlace) => {
+      enlace.addEventListener('click', () => filtrar(enlace.dataset.filtrar ?? 'todas'));
+    });
+  }
+</script>

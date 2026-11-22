@@ -1,0 +1,73 @@
+---
+import EncabezadoSeccion from './ui/EncabezadoSeccion.astro';
+import Boton from './ui/Boton.astro';
+import Icono from './ui/Icono.astro';
+import { enlaceWhatsApp } from '../lib/whatsapp';
+import { negocio } from '../data/negocio';
+
+const pasos = [
+  {
+    titulo: 'Elige',
+    texto: 'Mira el catálogo y escoge la ancheta que más te guste, o cuéntanos tu idea.',
+    color: 'bg-morado text-white',
+  },
+  {
+    titulo: 'Personaliza',
+    texto: 'Ajustamos productos, colores y el mensaje de la tarjeta a tu gusto y presupuesto.',
+    color: 'bg-amarillo text-tinta',
+  },
+  {
+    titulo: 'Confirma por WhatsApp',
+    texto: 'Acordamos fecha, hora, dirección de entrega y forma de pago.',
+    color: 'bg-turquesa text-tinta',
+  },
+  {
+    titulo: 'Recibe y sorprende',
+    texto: `Llevamos tu detalle a domicilio en ${negocio.zonaEntrega}, listo para enamorar.`,
+    color: 'bg-lila text-tinta',
+  },
+];
+---
+
+<section id="como-pedir" aria-labelledby="titulo-como-pedir" class="py-20 sm:py-24">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <EncabezadoSeccion
+      id="titulo-como-pedir"
+      eyebrow="03 · Cómo pedir"
+      titulo="Pedir es así de fácil"
+      descripcion="Cuatro pasos y tu detalle va en camino. Te acompañamos por WhatsApp en todo el proceso."
+      centrado
+    />
+
+    <ol class="relative mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+      <!-- Línea punteada que une los pasos (solo en pantallas anchas) -->
+      <span
+        aria-hidden="true"
+        class="absolute top-8 right-[12.5%] left-[12.5%] hidden border-t-2 border-dashed border-lila lg:block"
+      ></span>
+      {
+        pasos.map((p, i) => (
+          <li class="relative text-center">
+            <span
+              class:list={[
+                'relative mx-auto grid size-16 place-items-center rounded-full font-display text-2xl font-black ring-8 ring-white',
+                p.color,
+              ]}
+            >
+              {i + 1}
+            </span>
+            <h3 class="mt-5 text-lg font-extrabold">{p.titulo}</h3>
+            <p class="mx-auto mt-2 max-w-[17rem] text-[0.95rem]">{p.texto}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="mt-14 text-center">
+      <Boton href={enlaceWhatsApp()} variante="morado" tamano="lg" externo>
+        <Icono nombre="whatsapp" class="size-5" />
+        Empezar mi pedido
+      </Boton>
+    </div>
+  </div>
+</section>

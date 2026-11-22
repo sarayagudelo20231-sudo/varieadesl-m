@@ -1,0 +1,77 @@
+---
+import { Image } from 'astro:assets';
+import logoColor from '../assets/brand/logo-color.png';
+import Boton from './ui/Boton.astro';
+import Icono from './ui/Icono.astro';
+import Brillos from './graficos/Brillos.astro';
+import Corazon from './graficos/Corazon.astro';
+import { enlaceWhatsApp } from '../lib/whatsapp';
+import { negocio } from '../data/negocio';
+
+const ventajas = ['100 % personalizadas', 'Entrega a domicilio', 'Pedidos por WhatsApp'];
+---
+
+<section id="inicio" class="relative overflow-hidden bg-fondo">
+  <!-- Decoración -->
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+    <Brillos class="absolute top-6 left-[3%] hidden size-14 motion-safe:animate-titilar lg:block" />
+    <Corazon variante="linea-morado" class="absolute bottom-16 left-[46%] hidden size-9 -rotate-12 opacity-60 md:block" />
+    <Corazon variante="relleno" class="absolute top-24 right-[5%] size-10 rotate-12 motion-safe:animate-flotar" />
+    <Brillos color="lila" class="absolute right-[38%] bottom-8 size-12 rotate-180" />
+  </div>
+
+  <div class="relative mx-auto grid max-w-6xl items-center gap-12 px-4 py-14 sm:px-6 md:grid-cols-[1.1fr_1fr] md:py-20 lg:py-24">
+    <div>
+      <p class="font-display text-xs font-extrabold tracking-[0.2em] text-morado uppercase sm:text-sm sm:tracking-[0.3em]">
+        Detalles personalizados · {negocio.ciudad}
+      </p>
+      <h1 class="mt-5 text-[2.6rem] leading-[1.05] font-black sm:text-6xl lg:text-[4.2rem]">
+        Anchetas y regalos que <span class="font-script text-[0.86em] font-normal text-morado">enamoran</span>
+      </h1>
+      <p class="mt-6 max-w-lg text-lg">
+        Desayunos sorpresa, anchetas y detalles armados a mano para cada ocasión. Tú nos cuentas la idea y nosotros
+        creamos un momento que perdura.
+      </p>
+
+      <div class="mt-8 flex flex-wrap gap-3">
+        <Boton href="#catalogo" variante="morado" tamano="lg">
+          Ver catálogo
+          <Icono nombre="flecha" class="size-5" />
+        </Boton>
+        <Boton href={enlaceWhatsApp()} variante="contorno" tamano="lg" externo>
+          <Icono nombre="whatsapp" class="size-5" />
+          Escríbenos
+        </Boton>
+      </div>
+
+      <ul class="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-[0.95rem] font-medium text-tinta">
+        {
+          ventajas.map((v) => (
+            <li class="flex items-center gap-2">
+              <span class="grid size-6 place-items-center rounded-full bg-turquesa text-tinta">
+                <Icono nombre="check" class="size-3.5" grosor={3} />
+              </span>
+              {v}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <!-- Logo con su área de respeto (≈ 1/6 del ancho), sin sombras ni efectos -->
+    <div class="relative mx-auto w-full max-w-[460px]">
+      <div class="rounded-[2.5rem] border-2 border-dashed border-lila bg-white p-[11%]">
+        <Image
+          src={logoColor}
+          alt={`Logo de ${negocio.nombre}: ${negocio.eslogan}`}
+          widths={[340, 480, 714]}
+          sizes="(min-width: 768px) 360px, 75vw"
+          loading="eager"
+          fetchpriority="high"
+          class="h-auto w-full"
+        />
+      </div>
+      <Brillos class="absolute -top-6 -right-4 size-16 rotate-90 motion-safe:animate-titilar" />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,77 @@
+---
+import { Image } from 'astro:assets';
+import Boton from './ui/Boton.astro';
+import Icono from './ui/Icono.astro';
+import PlaceholderAncheta from './PlaceholderAncheta.astro';
+import type { Ancheta } from '../data/catalogo';
+import { ocasionPorId } from '../data/ocasiones';
+import { precioCOP } from '../lib/formato';
+import { enlaceWhatsApp, mensajeAncheta } from '../lib/whatsapp';
+
+interface Props {
+  ancheta: Ancheta;
+  indice: number;
+}
+
+const { ancheta, indice } = Astro.props;
+const precio = precioCOP(ancheta.precioDesde);
+const pedido = enlaceWhatsApp(mensajeAncheta(ancheta.nombre, precio));
+const etiquetas = ancheta.ocasiones.map((id) => ocasionPorId(id)?.nombreCorto).filter(Boolean);
+---
+
+<article
+  class="flex h-full flex-col overflow-hidden rounded-[1.75rem] bg-white ring-1 ring-lila/60 transition duration-200 hover:-translate-y-1 hover:ring-2 hover:ring-lila"
+>
+  <div class="relative aspect-[4/3] overflow-hidden">
+    {
+      ancheta.imagen ? (
+        <Image
+          src={ancheta.imagen}
+          alt={`Ancheta ${ancheta.nombre}`}
+          widths={[400, 720]}
+          sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
+          class="size-full object-cover"
+        />
+      ) : (
+        <PlaceholderAncheta tono={indice} nombre={ancheta.nombre} />
+      )
+    }
+    {
+      ancheta.destacada && (
+        <span class="absolute top-4 left-4 rounded-full bg-amarillo px-3 py-1 font-display text-xs font-extrabold text-tinta">
+          Favorita
+        </span>
+      )
+    }
+  </div>
+
+  <div class="flex flex-1 flex-col p-6">
+    <ul class="flex flex-wrap gap-1.5" aria-label="Ocasiones">
+      {etiquetas.map((e) => <li class="rounded-full bg-fondo px-2.5 py-1 text-xs font-medium text-morado">{e}</li>)}
+    </ul>
+    <h3 class="mt-3 text-xl font-extrabold">{ancheta.nombre}</h3>
+    <p class="mt-2 text-[0.95rem]">{ancheta.descripcion}</p>
+
+    <ul class="mt-4 space-y-2 text-sm">
+      {
+        ancheta.incluye.map((item) => (
+          <li class="flex items-start gap-2">
+            <Icono nombre="check" class="mt-0.5 size-4 text-morado" grosor={2.6} />
+            {item}
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-auto flex items-end justify-between gap-4 pt-6">
+      <p class="leading-tight">
+        <span class="block text-xs font-medium tracking-wider uppercase">Desde</span>
+        <span class="font-display text-2xl font-black text-tinta">{precio}</span>
+      </p>
+      <Boton href={pedido} variante="morado" tamano="sm" externo aria-label={`Pedir ${ancheta.nombre} por WhatsApp`}>
+        <Icono nombre="whatsapp" class="size-4.5" />
+        Pedir
+      </Boton>
+    </div>
+  </div>
+</article>

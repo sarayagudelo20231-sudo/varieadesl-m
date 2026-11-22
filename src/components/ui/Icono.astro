@@ -1,0 +1,24 @@
+---
+import { iconos, type NombreIcono } from './iconos';
+
+interface Props {
+  nombre: NombreIcono;
+  class?: string;
+  grosor?: number;
+}
+
+const { nombre, class: clase = 'size-5', grosor = 2 } = Astro.props;
+---
+
+<svg
+  class:list={['shrink-0', clase]}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width={grosor}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+  set:html={iconos[nombre]}
+/>

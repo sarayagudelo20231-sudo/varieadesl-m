@@ -1,0 +1,74 @@
+---
+import { Image } from 'astro:assets';
+import logoColor from '../assets/brand/logo-color.png';
+import Icono from './ui/Icono.astro';
+import { negocio, instagramUrl } from '../data/negocio';
+import { enlaceWhatsApp } from '../lib/whatsapp';
+
+const anio = new Date().getFullYear();
+const titulo = 'font-display text-xs font-extrabold tracking-[0.3em] text-morado uppercase';
+---
+
+<footer id="contacto" class="mt-20 bg-fondo pt-16 pb-10">
+  <div class="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 md:grid-cols-[1.3fr_1fr_1fr]">
+    <div>
+      <Image src={logoColor} alt={negocio.nombre} widths={[200, 400]} sizes="200px" class="h-auto w-[200px]" />
+      <p class="mt-5 max-w-xs">
+        Anchetas, desayunos sorpresa y detalles personalizados hechos con amor en {negocio.ciudad}.
+      </p>
+    </div>
+
+    <div>
+      <h2 class={titulo}>Contacto</h2>
+      <ul class="mt-5 space-y-4">
+        <li>
+          <a
+            href={enlaceWhatsApp()}
+            target="_blank"
+            rel="noopener"
+            class="flex items-center gap-3 font-medium text-tinta hover:text-morado"
+          >
+            <Icono nombre="whatsapp" class="size-5 text-morado" />
+            {negocio.whatsappVisible}
+          </a>
+        </li>
+        <li>
+          <a
+            href={instagramUrl}
+            target="_blank"
+            rel="noopener"
+            class="flex items-center gap-3 font-medium text-tinta hover:text-morado"
+          >
+            <Icono nombre="instagram" class="size-5 text-morado" />
+            @{negocio.instagram}
+          </a>
+        </li>
+        <li class="flex items-center gap-3">
+          <Icono nombre="ubicacion" class="size-5 text-morado" />
+          {negocio.ciudad}, Colombia
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class={titulo}>Horario y entregas</h2>
+      <ul class="mt-5 space-y-4">
+        <li class="flex items-start gap-3">
+          <Icono nombre="reloj" class="mt-0.5 size-5 text-morado" />
+          {negocio.horario}
+        </li>
+        <li class="flex items-start gap-3">
+          <Icono nombre="camion" class="mt-0.5 size-5 text-morado" />
+          Entregas a domicilio en {negocio.zonaEntrega}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div
+    class="mx-auto mt-14 flex max-w-6xl flex-col gap-2 border-t border-lila/70 px-4 pt-6 text-sm sm:flex-row sm:justify-between sm:px-6"
+  >
+    <p>© {anio} {negocio.nombre}. Todos los derechos reservados.</p>
+    <p class="font-medium text-morado">{negocio.eslogan}</p>
+  </div>
+</footer>

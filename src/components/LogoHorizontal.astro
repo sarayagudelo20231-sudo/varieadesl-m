@@ -1,0 +1,36 @@
+---
+/**
+ * Versión horizontal del logo (lámina 03): moño + "Variedades LyL" + corazón,
+ * y opcionalmente el eslogan con separador. Uso recomendado en cabeceras.
+ */
+import { Image } from 'astro:assets';
+import iconoMono from '../assets/brand/icono-mono.png';
+import Corazon from './graficos/Corazon.astro';
+
+interface Props {
+  conEslogan?: boolean;
+  class?: string;
+}
+
+const { conEslogan = false, class: clase } = Astro.props;
+---
+
+<span class:list={['inline-flex items-center gap-2', clase]}>
+  <Image src={iconoMono} alt="" width={120} class="h-auto w-[52px] sm:w-[60px]" loading="eager" />
+  <span class="font-display text-[1.35rem] leading-none font-black tracking-tight whitespace-nowrap sm:text-2xl">
+    <span class="text-morado">Variedades</span>{' '}<span class="text-amarillo">LyL</span>
+  </span>
+  <Corazon variante="linea-turquesa" class="-ml-0.5 size-5 sm:size-6" />
+  {
+    conEslogan && (
+      <span class="ml-2 hidden items-center gap-3 xl:flex">
+        <span class="h-9 w-px bg-lila" />
+        <span class="border-b-2 border-amarillo pb-0.5 text-[0.7rem] leading-tight font-semibold text-morado">
+          Detalles que enamoran,
+          <br />
+          momentos que perduran.
+        </span>
+      </span>
+    )
+  }
+</span>

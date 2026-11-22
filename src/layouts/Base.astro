@@ -1,0 +1,82 @@
+---
+// Solo el subconjunto latino: cubre todo el español (á, ñ, ¿, ¡, «»).
+import '@fontsource/montserrat/latin-800.css';
+import '@fontsource/montserrat/latin-900.css';
+import '@fontsource/poppins/latin-400.css';
+import '@fontsource/poppins/latin-500.css';
+import '@fontsource/poppins/latin-600.css';
+import '@fontsource/pacifico/latin-400.css';
+import '../styles/global.css';
+
+import { negocio, instagramUrl } from '../data/negocio';
+import { url } from '../lib/url';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `${negocio.nombre} · Anchetas y detalles personalizados en ${negocio.ciudad}`,
+  description = `Anchetas, desayunos sorpresa y regalos personalizados para cumpleaños, amor y amistad, grados y más. Pide por WhatsApp y te lo llevamos en ${negocio.zonaEntrega}.`,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(url('og-image.png'), Astro.site);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Store',
+  name: negocio.nombre,
+  slogan: negocio.eslogan,
+  description,
+  url: canonical.href,
+  image: ogImage.href,
+  telephone: `+${negocio.whatsapp}`,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: negocio.ciudad,
+    addressCountry: 'CO',
+  },
+  areaServed: negocio.zonaEntrega,
+  sameAs: [instagramUrl],
+};
+---
+
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <link rel="apple-touch-icon" href={url('apple-touch-icon.png')} />
+    <meta name="theme-color" content="#6C4CE8" />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:site_name" content={negocio.nombre} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`Logo de ${negocio.nombre}: ${negocio.eslogan}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a
+      href="#contenido"
+      class="sr-only rounded-full bg-morado px-5 py-3 font-display font-extrabold text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50"
+    >
+      Saltar al contenido
+    </a>
+    <slot />
+  </body>
+</html>
